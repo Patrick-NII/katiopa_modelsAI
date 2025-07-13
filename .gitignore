@@ -1,0 +1,13 @@
+env/
+__pycache__/
+*.pyc
+*.ipynb_checkpoints/
+# Ignore les modèles lourds
+models/
+*.safetensors
+*.bin
+*.pt
+*.tar.gz
+*.zip
+# Fichiers système macOS
+.DS_Store
