@@ -1,5 +1,6 @@
 # Image officielle PyTorch avec Python 3.11 et CUDA 11.8
-FROM --platform=linux/amd64 python:3.11-slim
+FROM --platform=linux/amd64 pytorch/pytorch:2.1.0-cuda11.8-cudnn8-runtime
+
 # Installer des paquets Debian nécessaires
 RUN apt-get update && apt-get install -y \
     git \
