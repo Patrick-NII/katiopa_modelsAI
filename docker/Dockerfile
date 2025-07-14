@@ -30,4 +30,4 @@ ARG HF_TOKEN
 ENV HUGGINGFACE_HUB_TOKEN=${HF_TOKEN}
 
 # Commande par défaut
-CMD ["bash"]
+CMD ["sleep", "infinity"]
