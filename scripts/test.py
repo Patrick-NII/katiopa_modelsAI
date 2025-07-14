@@ -1,0 +1,1 @@
+print("Pourquoi les oiseaux se cachent pour mourir ? ")
