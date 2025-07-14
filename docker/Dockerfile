@@ -1,7 +1,7 @@
-# Utilise une image légère Python
-FROM python:3.10-slim
+# Image officielle PyTorch avec Python 3.11 et CUDA 11.8
+FROM pytorch/pytorch:2.1.0-cuda11.8-cudnn8-runtime
 
-# Installation des outils de base
+# Installer des paquets Debian nécessaires
 RUN apt-get update && apt-get install -y \
     git \
     wget \
@@ -9,23 +9,24 @@ RUN apt-get update && apt-get install -y \
     libcairo2-dev \
     python3-dev \
     cmake \
+    build-essential \
     && rm -rf /var/lib/apt/lists/*
 
 # Dossier de travail dans le conteneur
 WORKDIR /app
 
-# Copie les scripts et modèles
+# Copier le code
 COPY ./scripts /app/scripts
 COPY ./models /app/models
+COPY requirements.txt .
 
-# (Optionnel) Copier requirements.txt et installer les dépendances
-# COPY requirements.txt .
-# RUN pip install --no-cache-dir -r requirements.txt
+# Installer les dépendances Python
+RUN pip install --upgrade pip setuptools wheel
+RUN pip install --no-cache-dir -r requirements.txt
 
-# Installation de huggingface_hub
+# Ajouter huggingface_hub et configurer le token
 RUN pip install --no-cache-dir huggingface_hub
 
-# Configuration sécurisée du token Hugging Face
 ARG HF_TOKEN
 ENV HUGGINGFACE_HUB_TOKEN=${HF_TOKEN}
 
