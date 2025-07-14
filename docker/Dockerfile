@@ -1,20 +1,31 @@
-# docker/Dockerfile
-
+# Utilise une image légère Python
 FROM python:3.10-slim
 
-# Installation de git + wget + pip propre
-RUN apt-get update && apt-get install -y git wget && rm -rf /var/lib/apt/lists/*
+# Installation des outils de base
+RUN apt-get update && apt-get install -y \ 
+git \ 
+wget \ 
+pkg-config \ 
+libcairo2-dev \ 
+python3-dev \ 
+cmake \ 
+&& rm -rf 
+/var/lib/apt/lists/*
 
-# Création dossier de travail dans le conteneur
+# Dossier de travail dans le conteneur
 WORKDIR /app
 
-# Copie les fichiers requis (ex: requirements plus tard)
-COPY ./scripts /app/scripts
-COPY ./models /app/models
+# Copie les scripts et modèles (sans requirements.txt ici, à toi d'ajouter si nécessaire)
+COPY ./scripts /app/scripts COPY ./models /app/models
 
-# Installe HuggingFace + autres lib
+# Installation de huggingface_hub
 RUN pip install --no-cache-dir huggingface_hub
 
-CMD [ "bash" ]
+# Installation des dépendances via requirements (si tu l'ajoutes au COPY plus tard) COPY requirements.txt . RUN pip install 
+# --no-cache-dir -r requirements.txt --- Configuration sécurisée du token Hugging Face --- On utilise un argument de build 
 
-# ENV HUGGINGFACE_HUB_TOKEN = your_token_here
+# (facultatif) + variable d'environnement
+ARG HF_TOKEN ENV HUGGINGFACE_HUB_TOKEN=${HF_TOKEN}
+
+# Commande par défaut
+CMD ["bash"]
